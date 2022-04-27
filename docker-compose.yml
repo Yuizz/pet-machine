@@ -9,4 +9,4 @@ services:
       - ~/apps/mongo:/data/db
     environment:
       - MONGO_INITDB_ROOT_USERNAME=jugo
-      - MONGO_INITDB_ROOT_PASSWORD=pass
+      - MONGO_INITDB_ROOT_PASSWORD=secretpass
