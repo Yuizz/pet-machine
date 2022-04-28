@@ -15,4 +15,26 @@ describe('Unit Tests for User class', ()=>{
 
     console.log(user)
   })
+
+  test('Add getters', ()=>{
+    const user = new User('17260671', 'jugo@mail.com', 'Julian', 'Gonzalez', 2.4)
+ 
+    expect(user.getMail).toBe('jugo@mail.com')
+    expect(user.getName).toBe('Julian')
+    expect(user.getLastName).toBe('Gonzalez')
+    expect(user.getBalance).toBe(2.4)
+    expect(user.getCreatedAt).not.toBeUndefined()
+    expect(user.getUpdatedAt).not.toBeUndefined()
+  })
+  
+  test('Add setters', ()=>{
+    const user = new User('17260671', 'jugo@mail.com', 'Julian', 'Gonzalez', 2.4)
+    user.setName = 'Abelardo'
+    expect(user.name).toBe('Abelardo')
+
+    user.setBalance = 2.8
+    expect(user.balance).toBe(2.8)
+  })
 })
+
+
