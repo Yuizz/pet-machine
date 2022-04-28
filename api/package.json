@@ -4,11 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node ./node_modules/.bin/jest"
+    "test": "node ./node_modules/.bin/jest",
+    "start": "node database.js"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "jest": "^28.0.1"
+  },
+  "dependencies": {
+    "mongoose": "^6.3.1"
   }
 }
