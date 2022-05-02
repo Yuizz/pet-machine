@@ -1,9 +1,8 @@
 class User{
-  constructor(controlNumber, mail, name, lastName, balance, createdAt, updatedAt){
+  constructor(controlNumber, mail, name, balance, createdAt, updatedAt){
     this.controlNumber = controlNumber
     this.mail = mail
     this.name = name
-    this.lastName = lastName
     this.balance = balance
     this.createdAt = new Date()
     this.updatedAt = new Date()
@@ -14,9 +13,6 @@ class User{
   get getName(){
     return this.name
   }
-  get getLastName(){
-    return this.lastName
-  }
   get getBalance(){
     return this.balance
   }
@@ -26,14 +22,12 @@ class User{
   get getUpdatedAt(){
     return this.updatedAt
   }
-
   set setName(newName){
     this.name = newName
   }
   set setBalance(newBalance){
     this.balance = newBalance
   }
-
   set setUpdatedAt(newUpdatedAt){
     this.updatedAt= newUpdatedAt
   }
