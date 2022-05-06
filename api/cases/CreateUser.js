@@ -1,34 +1,29 @@
 const User = require("../models/User")
+const InvalidUserDataError = require ("../errors/InvalidUserDataError")
 
 class CreateUser{
     constructor(data){
         this.data = data
     }
     #validateData(){
-        if (this.data == null){
-            return {error: 'data no existe'}
+        const Joi = require('joi')
+        const schema = Joi.object({
+            controlNumber: Joi.string().regex(/^\d+$/).required(),  //El patron regex hace match con un string de puros numeros
+            mail: Joi.string().email().required(),
+            name: Joi.string().max(70).required(),
+            balance: Joi.number().min(0)
+        }).options({abortEarly:false})
+        
+        const {value,error}=schema.validate(this.data)
+        if (error) {
+            throw new InvalidUserDataError(error.message)
         }
-        if (this.data.controlNumber == null || typeof this.data.controlNumber != 'string'){
-            return {error: 'necesitan tener un valor valido'}
-        }
-        else if(this.data.mail == null || typeof this.data.mail != 'string'){
-            return {error: 'necesitan tener un valor valido'}
-        }
-        else if(this.data.name == null || typeof this.data.name != 'string'){
-            return {error: 'necesitan tener un valor valido'}
-        }
-        else if(this.data.balance == null || typeof this.data.balance == isNaN){
-            return {error: 'necesitan tener un valor valido'}
-        }
-        return {error: null}
+        return value
     }
 
     create(){
-        const isValid = this.#validateData()
-        if (isValid.error){
-            return {error: isValid.error}
-        }
-        return new User(this.data.controlNumber, this.data.mail, this.data.name, this.data.balance)
+        const validatedData = this.#validateData()
+        return new User(validatedData.controlNumber, validatedData.mail, validatedData.name, validatedData.balance)
     }
 }
 

@@ -25,8 +25,8 @@ describe('Tests for CreateUser', () => {
         controlNumber: '17260671',
         mail: 'jugo@mail.com',
         name:'Julian Gonzalez',
-        balance:2.4}
-        
+        balance:2.4
+        }    
         const result = new CreateUser(payload).create()
         expect(result.controlNumber).toBe('17260671')
         expect(result.mail).toBe('jugo@mail.com')
