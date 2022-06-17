@@ -1,7 +1,7 @@
 class InvalidBalanceToAddError extends Error{
-    constructor (balanceToAdd){
+    constructor (message){
         super()
-        this.message = `The inserted balance "${balanceToAdd}" must be a number and be higher than 0`
+        this.message = message
     }
 }
 

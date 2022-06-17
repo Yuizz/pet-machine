@@ -16,7 +16,7 @@ class AddBalance{
 
         const {value,error}=schema.validate({balanceToAdd:this.balanceToAdd})
         if (error) {
-            throw new InvalidBalanceToAddError(this.balanceToAdd)
+            throw new InvalidBalanceToAddError(error.message)
         }
         return value
     }
