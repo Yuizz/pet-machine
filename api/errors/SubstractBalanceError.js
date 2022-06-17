@@ -1,7 +1,7 @@
 class SubstractBalanceError extends Error{
-    constructor (balancetoSubstract){
+    constructor (message){
         super()
-        this.message = `The balance you want to substract "${balancetoSubstract}" must be a number and higher than 0.`
+        this.message = message
     }
 }
 

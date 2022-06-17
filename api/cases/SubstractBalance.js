@@ -16,7 +16,7 @@ class SubstractBalance{
 
         const {value,error}=schema.validate({balanceToSubstract:this.balanceToSubstract})
         if (error) {
-            throw new SubstractBalanceError(this.balanceToSubstract)
+            throw new SubstractBalanceError(error.message)
         }
         return value
     }

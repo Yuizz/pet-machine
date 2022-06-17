@@ -3,6 +3,7 @@ const CreateUser = require('../cases/CreateUser');
 const User = require('../models/User');
 const GetUser = require('../cases/GetUser')
 const AddBalance = require ('../cases/AddBalance')
+const SubstractBalance = require('../cases/SubstractBalance')
 
 var router = express.Router();
 
@@ -36,6 +37,20 @@ router.put('/add-balance/:controlNumber', function(req, res, next){
     const currentBalance = user.balance
     const addBalance = new AddBalance(balanceToAdd, currentBalance).sum()
     user.balance = addBalance 
+    res.send(user)
+  }catch(error){
+    res.status(404).send(error)
+  }
+})
+
+router.put('/substract-balance/:controlNumber', function(req, res, next){
+  try{
+    const getUser = new GetUser()
+    const user = getUser.find(req.params.controlNumber)
+    const balanceToSubstract = req.body.balanceToSubstract
+    const currentBalance = user.balance
+    const substractBalance = new SubstractBalance(balanceToSubstract, currentBalance).substract()
+    user.balance = substractBalance 
     res.send(user)
   }catch(error){
     res.status(404).send(error)
