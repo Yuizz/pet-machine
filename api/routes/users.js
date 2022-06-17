@@ -2,6 +2,7 @@ var express = require('express');
 const CreateUser = require('../cases/CreateUser');
 const User = require('../models/User');
 const GetUser = require('../cases/GetUser')
+const AddBalance = require ('../cases/AddBalance')
 
 var router = express.Router();
 
@@ -27,8 +28,19 @@ router.get('/:controlNumber', function(req,res, next){
   }
 })
 
-
-router.post('/update-balance', function(req,res,next){
-    res.send("oli")
+router.put('/add-balance/:controlNumber', function(req, res, next){
+  try{
+    const getUser = new GetUser()
+    const user = getUser.find(req.params.controlNumber)
+    const balanceToAdd = req.body.balanceToAdd
+    const currentBalance = user.balance
+    const addBalance = new AddBalance(balanceToAdd, currentBalance).sum()
+    user.balance = addBalance 
+    res.send(user)
+  }catch(error){
+    res.status(404).send(error)
+  }
 })
+
+
 module.exports = router;

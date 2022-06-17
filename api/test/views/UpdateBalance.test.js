@@ -17,4 +17,12 @@ describe('Test for balance', () => {
         const result = new AddBalance(balanceToAdd, user.balance).sum()
         expect(result).toBe(18)
     })
+    test('Return an error when the balance you want to add is not a number.', () => {
+        const user = new User('17260671', 'jugo@mail.com', 'Jugo', 15)
+        const balanceToAdd = {"hola" : 12}
+        const t = () => {
+            return new AddBalance(balanceToAdd, user.balance).sum()
+        }
+        expect(t).toThrow(InvalidBalanceToAddError)
+    })
 })
