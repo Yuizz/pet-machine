@@ -1,0 +1,203 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Documentation",
+    "description": "API Documentation for clients"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/users/create-user": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "User information.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User returned or created successfully.",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/users/{controlNumber}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "controlNumber",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User returned successfully.",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/users/add-balance/{controlNumber}": {
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "controlNumber",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Add balance to user.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AddBalance"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/users/substract-balance/{controlNumber}": {
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "controlNumber",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Substract balance from user.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SubstractBalance"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "CreateUser": {
+      "type": "object",
+      "properties": {
+        "controlNumber": {
+          "type": "string",
+          "example": "1514784"
+        },
+        "mail": {
+          "type": "string",
+          "example": "juan.p@example.com"
+        },
+        "name": {
+          "type": "string",
+          "example": "Juan Perez"
+        },
+        "balance": {
+          "type": "number",
+          "example": 7
+        }
+      },
+      "required": [
+        "controlNumber",
+        "mail",
+        "name"
+      ]
+    },
+    "AddBalance": {
+      "type": "object",
+      "properties": {
+        "balanceToAdd": {
+          "type": "number",
+          "example": 14
+        }
+      },
+      "required": [
+        "balanceToAdd"
+      ]
+    },
+    "SubstractBalance": {
+      "type": "object",
+      "properties": {
+        "balanceToSubstract": {
+          "type": "number",
+          "example": 5
+        }
+      },
+      "required": [
+        "balanceToSubstract"
+      ]
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "controlNumber": {
+          "type": "string",
+          "example": "17260672"
+        },
+        "mail": {
+          "type": "string",
+          "example": "derrick.rose@example.com"
+        },
+        "name": {
+          "type": "string",
+          "example": "Derrick Rose"
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2022-06-17T23:13:05.747Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2022-06-17T23:13:05.747Z"
+        }
+      }
+    }
+  }
+}

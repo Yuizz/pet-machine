@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node ./bin/www",
     "start:dev": "nodemon ./bin/www",
-    "test": "node ./node_modules/jest/bin/jest.js --runInBand"
+    "test": "node ./node_modules/jest/bin/jest.js --runInBand",
+    "build:docs": "node swagger.js"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -13,11 +14,13 @@
     "ejs": "~2.6.1",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
+    "joi": "~17.6.0",
     "morgan": "~1.9.1",
-    "joi": "~17.6.0"
+    "swagger-ui-express": "^4.1.4"
   },
   "devDependencies": {
     "jest": "^28.0.1",
-    "nodemon": "^2.0.16"
+    "nodemon": "^2.0.16",
+    "swagger-autogen": "^2.21.3"
   }
 }
