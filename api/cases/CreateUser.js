@@ -2,6 +2,7 @@ const User = require("../models/User")
 const InvalidUserDataError = require ("../errors/InvalidUserDataError")
 
 class CreateUser{
+
     constructor(data){
         this.data = data
     }
@@ -11,7 +12,8 @@ class CreateUser{
             controlNumber: Joi.string().regex(/^\d+$/).required(),  //El patron regex hace match con un string de puros numeros
             mail: Joi.string().email().required(),
             name: Joi.string().max(70).required(),
-            balance: Joi.number().min(0)
+            balance: Joi.number().min(0),
+            rfid: Joi.string().min(10).max(10).required()
         }).options({abortEarly:false})
         
         const {value,error}=schema.validate(this.data)
@@ -23,7 +25,7 @@ class CreateUser{
 
     create(){
         const validatedData = this.#validateData()
-        return new User(validatedData.controlNumber, validatedData.mail, validatedData.name, validatedData.balance)
+        return new User(validatedData.controlNumber, validatedData.mail, validatedData.name, validatedData.balance, validatedData.rfid)
     }
 }
 

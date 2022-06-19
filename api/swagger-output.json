@@ -27,7 +27,7 @@
         ],
         "responses": {
           "200": {
-            "description": "User returned or created successfully.",
+            "description": "User created successfully.",
             "schema": {
               "$ref": "#/definitions/User"
             }
@@ -38,7 +38,7 @@
         }
       }
     },
-    "/users/{controlNumber}": {
+    "/users/control-number/{controlNumber}": {
       "get": {
         "description": "",
         "parameters": [
@@ -62,12 +62,36 @@
         }
       }
     },
-    "/users/add-balance/{controlNumber}": {
+    "/users/rfid/{rfid}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "rfid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User returned successfully.",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/users/add-balance/{rfid}": {
       "put": {
         "description": "",
         "parameters": [
           {
-            "name": "controlNumber",
+            "name": "rfid",
             "in": "path",
             "required": true,
             "type": "string"
@@ -92,12 +116,12 @@
         }
       }
     },
-    "/users/substract-balance/{controlNumber}": {
+    "/users/substract-balance/{rfid}": {
       "put": {
         "description": "",
         "parameters": [
           {
-            "name": "controlNumber",
+            "name": "rfid",
             "in": "path",
             "required": true,
             "type": "string"
@@ -142,12 +166,17 @@
         "balance": {
           "type": "number",
           "example": 7
+        },
+        "rfid": {
+          "type": "string",
+          "example": "1645378452"
         }
       },
       "required": [
         "controlNumber",
         "mail",
-        "name"
+        "name",
+        "rfid"
       ]
     },
     "AddBalance": {

@@ -19,17 +19,17 @@ router.post("/create-user", function (req, res, next) {
     const user = createUser.create();
     /* #swagger.responses[200] = { 
       schema: { "$ref": "#/definitions/User" },
-      description: "User returned or created successfully." } */
+      description: "User created successfully." } */
     res.send(user);
   } catch (error) {
     res.status(400).send(error);
   }
 });
 
-router.get("/:controlNumber", function (req, res, next) {
+router.get("/control-number/:controlNumber", function (req, res, next) {
   try {
     const getUser = new GetUser();
-    const user = getUser.find(req.params.controlNumber);
+    const user = getUser.findByControlNumber(req.params.controlNumber);
     /* #swagger.responses[200] = { 
       schema: { "$ref": "#/definitions/User" },
       description: "User returned successfully." } */
@@ -39,7 +39,20 @@ router.get("/:controlNumber", function (req, res, next) {
   }
 });
 
-router.put("/add-balance/:controlNumber", function (req, res, next) {
+router.get("/rfid/:rfid", function (req, res, next) {
+  try {
+    const getUser = new GetUser();
+    const user = getUser.findByRfid(req.params.rfid);
+    /* #swagger.responses[200] = { 
+      schema: { "$ref": "#/definitions/User" },
+      description: "User returned successfully." } */
+    res.send(user);
+  } catch (error) {
+    res.status(404).send(error);
+  }
+});
+
+router.put("/add-balance/:rfid", function (req, res, next) {
   /*    #swagger.parameters['body'] = {
         in: 'body',
         description: 'Add balance to user.',
@@ -48,7 +61,7 @@ router.put("/add-balance/:controlNumber", function (req, res, next) {
   } */
   try {
     const getUser = new GetUser();
-    const user = getUser.find(req.params.controlNumber);
+    const user = getUser.findByRfid(req.params.rfid);
     const balanceToAdd = req.body.balanceToAdd;
     const currentBalance = user.balance;
     const addBalance = new AddBalance(balanceToAdd, currentBalance).sum();
@@ -59,7 +72,7 @@ router.put("/add-balance/:controlNumber", function (req, res, next) {
   }
 });
 
-router.put("/substract-balance/:controlNumber", function (req, res, next) {
+router.put("/substract-balance/:rfid", function (req, res, next) {
   /*    #swagger.parameters['body'] = {
         in: 'body',
         description: 'Substract balance from user.',
@@ -68,7 +81,7 @@ router.put("/substract-balance/:controlNumber", function (req, res, next) {
   } */
   try {
     const getUser = new GetUser();
-    const user = getUser.find(req.params.controlNumber);
+    const user = getUser.findByRfid(req.params.rfid);
     const balanceToSubstract = req.body.balanceToSubstract;
     const currentBalance = user.balance;
     const substractBalance = new SubstractBalance(

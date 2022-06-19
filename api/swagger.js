@@ -10,7 +10,8 @@ const swaggerOptions = {
       $controlNumber: "1514784",
       $mail: "juan.p@example.com",
       $name: "Juan Perez",
-      balance: 7
+      balance: 7,
+      $rfid: "1645378452"
     },
     AddBalance: {
       $balanceToAdd: 14

@@ -1,7 +1,9 @@
 class UserNotFound extends Error{
-    constructor (controlNumber){
+    static RFID = "rfid"
+    static CONTROL_NUMBER = "control number"
+    constructor (id, idType){
         super()
-        this.message = `The user with the control number "${controlNumber}" does not exist.`
+        this.message = `The user with the ${idType} "${id}" does not exist.`
     }
 }
 
