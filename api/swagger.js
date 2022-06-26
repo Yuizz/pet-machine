@@ -5,6 +5,7 @@ const swaggerOptions = {
     title: "Documentation",
     description: "API Documentation for clients",
   },
+  host:"localhost:3001",
   definitions: {
     CreateUser: {
       $controlNumber: "1514784",
@@ -23,6 +24,7 @@ const swaggerOptions = {
       controlNumber: "17260672",
       mail: "derrick.rose@example.com",
       name: "Derrick Rose",
+      rfid: "1542159874",
       createdAt: "2022-06-17T23:13:05.747Z",
       updatedAt: "2022-06-17T23:13:05.747Z"
     }
