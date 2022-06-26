@@ -2,8 +2,9 @@ const User = require("../models/User")
 const InvalidUserDataError = require ("../errors/InvalidUserDataError")
 
 class CreateUser{
-
-    constructor(data){
+    #repository
+    constructor(repository, data){
+        this.#repository = repository
         this.data = data
     }
     #validateData(){
@@ -23,9 +24,10 @@ class CreateUser{
         return value
     }
 
-    create(){
+    async create(){
         const validatedData = this.#validateData()
-        return new User(validatedData.controlNumber, validatedData.mail, validatedData.name, validatedData.balance, validatedData.rfid)
+        const user = new User(validatedData.controlNumber, validatedData.mail, validatedData.name, validatedData.balance, validatedData.rfid)
+        return await this.#repository.save(user)        
     }
 }
 

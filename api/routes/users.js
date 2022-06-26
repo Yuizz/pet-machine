@@ -1,12 +1,14 @@
 var express = require("express");
 const CreateUser = require("../cases/CreateUser");
 const User = require("../models/User");
+const MongoUserRepository = require("../models/MongoUserRepository")
 const GetUser = require("../cases/GetUser");
 const AddBalance = require("../cases/AddBalance");
 const SubstractBalance = require("../cases/SubstractBalance");
 const db = require("../db")
 
 var router = express.Router();
+const userRepository = new MongoUserRepository(db)
 
 router.post("/create-user", async function (req, res, next) {
   /*    #swagger.parameters['body'] = {
@@ -16,9 +18,8 @@ router.post("/create-user", async function (req, res, next) {
         schema: { $ref: "#/definitions/CreateUser" }
   } */
   try {
-    const createUser = new CreateUser(req.body);
-    const user = createUser.create();
-    await db.collection('users').insertOne({...user})
+    const createUser = new CreateUser(userRepository, req.body);
+    const user = await createUser.create();
     /* #swagger.responses[200] = { 
       schema: { "$ref": "#/definitions/User" },
       description: "User created successfully." } */
@@ -31,9 +32,8 @@ router.post("/create-user", async function (req, res, next) {
 
 router.get("/control-number/:controlNumber", async function (req, res, next) {
   try {
-    const getUser = new GetUser();
-    // const user = getUser.findByControlNumber(req.params.controlNumber);
-    const user = await db.collection('users').findOne({controlNumber: req.params.controlNumber})
+    const getUser = new GetUser(userRepository);
+    const user = await getUser.findByControlNumber(req.params.controlNumber)
     /* #swagger.responses[200] = { 
       schema: { "$ref": "#/definitions/User" },
       description: "User returned successfully." } */
@@ -46,9 +46,8 @@ router.get("/control-number/:controlNumber", async function (req, res, next) {
 
 router.get("/rfid/:rfid", async function (req, res, next) {
   try {
-    const getUser = new GetUser();
-    // const user = getUser.findByRfid(req.params.rfid);
-    const user = await db.collection('users').findOne({rfid: req.params.rfid})
+    const getUser = new GetUser(userRepository);
+    const user =  await getUser.findByRfid(req.params.rfid)
     /* #swagger.responses[200] = { 
       schema: { "$ref": "#/definitions/User" },
       description: "User returned successfully." } */
@@ -66,14 +65,13 @@ router.put("/add-balance/:rfid", async function (req, res, next) {
         schema: { $ref: "#/definitions/AddBalance" }
   } */
   try {
-    const getUser = new GetUser();
-    const user = await db.collection('users').findOne({rfid: req.params.rfid})
+    const getUser = new GetUser(userRepository);
+    const user = await getUser.findByRfid(req.params.rfid)
     const balanceToAdd = req.body.balanceToAdd;
     const currentBalance = user.balance;
-    const addBalance = new AddBalance(balanceToAdd, currentBalance).sum();
-    await db.collection('users').updateOne({rfid:req.params.rfid}, {$set:{balance:addBalance}})
-    user.balance = addBalance;
-    res.send(user);
+    const addBalance = new AddBalance(balanceToAdd, currentBalance ? currentBalance : 0).sum();
+    await userRepository.updateBalanceByRfid(req.params.rfid, addBalance)
+    res.send({...user,balance:addBalance});
   } catch (error) {
     console.error(error)
     res.status(404).send(error);
@@ -88,19 +86,16 @@ router.put("/substract-balance/:rfid", async function (req, res, next) {
         schema: { $ref: "#/definitions/SubstractBalance" }
   } */
   try {
-    const getUser = new GetUser();
-    // const user = getUser.findByRfid(req.params.rfid);
-    const user = await db.collection('users').findOne({rfid: req.params.rfid})
+    const getUser = new GetUser(userRepository);
+    const user = await getUser.findByRfid(req.params.rfid)
     const balanceToSubstract = req.body.balanceToSubstract;
     const currentBalance = user.balance;
     const substractBalance = new SubstractBalance(
       balanceToSubstract,
-      currentBalance
+      currentBalance ? currentBalance : 0
     ).substract();
-    await db.collection('users').updateOne({rfid:req.params.rfid}, {$set:{balance:substractBalance}})
-
-    user.balance = substractBalance;
-    res.send(user);
+    await userRepository.updateBalanceByRfid(req.params.rfid, substractBalance)
+    res.send({...user, balance:substractBalance});
   } catch (error) {
     console.error(error)
     res.status(404).send(error);
