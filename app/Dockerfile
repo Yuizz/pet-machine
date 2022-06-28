@@ -5,9 +5,8 @@ WORKDIR /app
 ENV PATH /app/node_modules/.bin$PATH
 
 COPY package.json ./
-COPY yarn.lock ./
 
 COPY . ./
 
-CMD ["yarn", "start"]
+CMD ["yarn", "dev", "--host", "0.0.0.0"]
 

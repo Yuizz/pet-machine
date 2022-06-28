@@ -35,10 +35,11 @@ services:
       - "3000:3000"
     volumes: 
       - ./app:/app
-    links:
-      - mongo
     env_file:
       - .env
+    environment:
+      - FAST_REFRESH=${FAST_REFRESH:-true}
+      - CHOKIDAR_USEPOLLING=${CHOKIDAR_USEPOLLING:-false}
 
 volumes:
   mongodata:

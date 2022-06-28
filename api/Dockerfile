@@ -9,5 +9,5 @@ COPY yarn.lock ./
 
 COPY . ./
 
-CMD ["yarn", "start"]
+CMD ["yarn", "start:dev"]
 

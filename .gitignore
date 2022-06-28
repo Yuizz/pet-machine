@@ -1,5 +1,7 @@
+# dev
 mongo/
 */node_modules
+
 # Logs
 logs
 *.log
