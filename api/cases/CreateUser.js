@@ -27,7 +27,7 @@ class CreateUser{
     async create(){
         const validatedData = this.#validateData()
         const user = new User(validatedData.controlNumber, validatedData.mail, validatedData.name, validatedData.balance, validatedData.rfid)
-        await this.#repository.save(user)        
+        await this.#repository.create(user)        
         return await this.#repository.findByControlNumber(user.controlNumber)
     }
 }

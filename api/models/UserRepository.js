@@ -1,5 +1,5 @@
 class UserRepository{
-    save(user){
+    create(user){
         throw new Error("Method must be implemented.")
     }
     findByRfid(rfid){

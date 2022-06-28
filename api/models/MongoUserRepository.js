@@ -6,8 +6,8 @@ class MongoUserRepository extends UserRepository{
         super()
         this.#db = db
     }
-    save(user){
-        return this.#db.collection('users').insertOne({...user})
+    create(user){
+        return this.#db.collection('users').insertOne({...user, createdAt:new Date(), updatedAt:new Date()})
     }
     findByRfid(rfid){
         return this.#db.collection('users').findOne({rfid})
@@ -16,7 +16,7 @@ class MongoUserRepository extends UserRepository{
         return this.#db.collection('users').findOne({controlNumber})
     }
     updateBalanceByRfid(rfid, balance){
-        return this.#db.collection('users').updateOne({rfid},{$set:{balance}})
+        return this.#db.collection('users').updateOne({rfid},{$set:{balance, updatedAt:new Date()}})
     }
 }
 
