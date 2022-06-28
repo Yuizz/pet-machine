@@ -2,9 +2,11 @@ const User = require("../models/User")
 const InvalidBalanceToAddError = require("../errors/InvalidBalanceToAddError")
 
 class AddBalance{
-    constructor(balanceToAdd, currentBalance){
+    #repository
+    constructor( repository, rfid, balanceToAdd){
+        this.#repository = repository
+        this.rfid = rfid
         this.balanceToAdd = balanceToAdd
-        this.currentBalance = currentBalance
     }
 
 
@@ -21,9 +23,11 @@ class AddBalance{
         return value
     }
 
-    sum(){
+    async sum(){
+        const user = await this.#repository.findByRfid(this.rfid)
         const validatedBalance = this.#validateBalance()
-        return this.currentBalance += validatedBalance.balanceToAdd
+        this.#repository.updateBalanceByRfid(this.rfid, user.balance + validatedBalance.balanceToAdd)
+        return await this.#repository.findByRfid(this.rfid)
     }
 }
 

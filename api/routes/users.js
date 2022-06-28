@@ -65,13 +65,8 @@ router.put("/add-balance/:rfid", async function (req, res, next) {
         schema: { $ref: "#/definitions/AddBalance" }
   } */
   try {
-    const getUser = new GetUser(userRepository);
-    const user = await getUser.findByRfid(req.params.rfid)
-    const balanceToAdd = req.body.balanceToAdd;
-    const currentBalance = user.balance;
-    const addBalance = new AddBalance(balanceToAdd, currentBalance ? currentBalance : 0).sum();
-    await userRepository.updateBalanceByRfid(req.params.rfid, addBalance)
-    res.send({...user,balance:addBalance});
+    const updatedUser = await new AddBalance(userRepository, req.params.rfid, req.body.balanceToAdd).sum()
+    res.send(updatedUser);
   } catch (error) {
     console.error(error)
     res.status(404).send(error);
