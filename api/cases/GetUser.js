@@ -9,7 +9,6 @@ class GetUser{
     }
     async findByControlNumber(controlNumber){
         const userObj = await this.#repository.findByControlNumber(controlNumber)
-        console.log(userObj)
         if (!userObj) throw new UserNotFound(controlNumber, UserNotFound.CONTROL_NUMBER)
         return userObj
     }
