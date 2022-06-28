@@ -1,22 +1,44 @@
 version: '3.8'
 
 services:
-  api:
-    container_name: pet-machine_api
-    restart: always
-    build: ./api
-    ports:
-      - "8000:8000"
-    volumes: 
-      - ./api:/api
-    links:
-      - mongodb
-
-  mongodb:
+  mongo:
+    image: mongo
     container_name: pet-machine_mongo
-    image: mongo:5.0
     ports:
       - 27017:27017
     volumes:
       - ./mongo:/data/db
       - ./mongo-init/init.js:/docker-entrypoint-initdb.d/init.js
+    env_file:
+      - .env
+        
+  api:
+    container_name: pet-machine_api
+    restart: always
+    build: ./api
+    ports:
+      - "3001:3001"
+    volumes: 
+      - ./api:/api
+    depends_on: 
+      - mongo
+    links:
+      - mongo
+    env_file:
+      - .env
+
+  app:
+    container_name: pet-machine_app
+    restart: always
+    build: ./app
+    ports:
+      - "3000:3000"
+    volumes: 
+      - ./app:/app
+    links:
+      - mongo
+    env_file:
+      - .env
+
+volumes:
+  mongodata:

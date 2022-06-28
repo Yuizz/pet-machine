@@ -1,18 +1,28 @@
 {
   "name": "api",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
-    "test": "node ./node_modules/.bin/jest",
-    "start": "node database.js"
-  },
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "jest": "^28.0.1"
+    "start": "node ./bin/www",
+    "start:dev": "nodemon ./bin/www",
+    "test": "node ./node_modules/jest/bin/jest.js --runInBand",
+    "build:docs": "node swagger.js"
   },
   "dependencies": {
-    "mongoose": "^6.3.1"
+    "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
+    "debug": "~2.6.9",
+    "ejs": "~2.6.1",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "joi": "~17.6.0",
+    "mongodb": "^4.7.0",
+    "morgan": "~1.9.1",
+    "swagger-ui-express": "^4.1.4"
+  },
+  "devDependencies": {
+    "jest": "^28.0.1",
+    "nodemon": "^2.0.16",
+    "swagger-autogen": "^2.21.3"
   }
 }

@@ -1,8 +1,8 @@
 FROM node:16.14.2-alpine3.15
 
-WORKDIR /api
+WORKDIR /app
 
-ENV PATH /api/node_modules/.bin$PATH
+ENV PATH /app/node_modules/.bin$PATH
 
 COPY package.json ./
 COPY yarn.lock ./
