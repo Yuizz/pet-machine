@@ -17,7 +17,7 @@ db.createCollection("users");
 student1 = {
   controlNumber: "17260001",
   name: "Student1",
-  lastName: "test",
+  email: "student1@mail.com",
   balance: 0,
   createdAt: new Date(),
   updatedAt: new Date(),
@@ -25,7 +25,7 @@ student1 = {
 student2 = {
   controlNumber: "17260002",
   name: "Student2",
-  lastName: "test",
+  email: "student2@mail.com",
   balance: 0,
   createdAt: new Date(),
   updatedAt: new Date(),
@@ -33,7 +33,7 @@ student2 = {
 student3 = {
   controlNumber: "17260003",
   name: "Student3",
-  lastName: "test",
+  email: "student3@mail.com",
   balance: 0,
   createdAt: new Date(),
   updatedAt: new Date(),
