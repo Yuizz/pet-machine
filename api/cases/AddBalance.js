@@ -13,7 +13,7 @@ class AddBalance{
     #validateBalance(){
         const Joi = require('joi')
         const schema = Joi.object({
-            balanceToAdd: Joi.number().greater(0)
+            balanceToAdd: Joi.number().greater(0).required()
         }).options({abortEarly:false})
 
         const {value,error}=schema.validate({balanceToAdd:this.balanceToAdd})

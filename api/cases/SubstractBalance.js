@@ -3,15 +3,17 @@ const SubstractBalanceError = require('../errors/SubstractBalanceError')
 const InsufficientBalanceError = require('../errors/InsufficientBalanceError')
 
 class SubstractBalance{
-    constructor(balanceToSubstract, currentBalance){
+    #repository
+    constructor(repository, rfid, balanceToSubstract){
+        this.#repository = repository
+        this.rfid = rfid
         this.balanceToSubstract = balanceToSubstract
-        this.currentBalance = currentBalance
     }
 
     #validateSubstract(){
         const Joi = require('joi')
         const schema = Joi.object({
-            balanceToSubstract: Joi.number().greater(0)
+            balanceToSubstract: Joi.number().greater(0).required()
         }).options({abortEarly:false})
 
         const {value,error}=schema.validate({balanceToSubstract:this.balanceToSubstract})
@@ -21,15 +23,17 @@ class SubstractBalance{
         return value
     }
 
-    substract(){
-        const validateSubstract = this.#validateSubstract()
-        const totalBalance = this.currentBalance - validateSubstract.balanceToSubstract
-        const balanceNeeded = validateSubstract.balanceToSubstract - this.currentBalance
+    async substract(){
+        const user = await this.#repository.findByRfid(this.rfid)
+        const validatedSubstract = this.#validateSubstract()
+        const totalBalance = user.balance - validatedSubstract.balanceToSubstract
+        const balanceNeeded = validatedSubstract.balanceToSubstract - user.balance
+        
         if (totalBalance < 0) throw new InsufficientBalanceError(balanceNeeded)
-        return totalBalance
+        
+        this.#repository.updateBalanceByRfid(this.rfid, totalBalance)
+        return await this.#repository.findByRfid(this.rfid)
     }
-
-
 
 }
 module.exports = SubstractBalance

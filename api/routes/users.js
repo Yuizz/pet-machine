@@ -81,16 +81,8 @@ router.put("/substract-balance/:rfid", async function (req, res, next) {
         schema: { $ref: "#/definitions/SubstractBalance" }
   } */
   try {
-    const getUser = new GetUser(userRepository);
-    const user = await getUser.findByRfid(req.params.rfid)
-    const balanceToSubstract = req.body.balanceToSubstract;
-    const currentBalance = user.balance;
-    const substractBalance = new SubstractBalance(
-      balanceToSubstract,
-      currentBalance ? currentBalance : 0
-    ).substract();
-    await userRepository.updateBalanceByRfid(req.params.rfid, substractBalance)
-    res.send({...user, balance:substractBalance});
+    const updatedUser = await new SubstractBalance(userRepository, req.params.rfid, req.body.balanceToSubstract).substract()
+    res.send(updated);
   } catch (error) {
     console.error(error)
     res.status(404).send(error);
