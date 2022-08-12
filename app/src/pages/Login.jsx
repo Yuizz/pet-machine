@@ -16,8 +16,8 @@ export function Login() {
       return
     }
 
-    console.log(data)
-    localStorage.setItem("PET_MACHINE", JSON.stringify(data.data))
+    console.log(userData.data)
+    localStorage.setItem("PET_MACHINE", JSON.stringify(userData.data))
     navigate({ to: "/", replace: true })
   }
   return (
