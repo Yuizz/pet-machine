@@ -1,25 +1,25 @@
-import Card from "react-bootstrap/Card";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import { useNavigate } from "@tanstack/react-location";
-import {useState} from "react"
+import Card from "react-bootstrap/Card"
+import Form from "react-bootstrap/Form"
+import Button from "react-bootstrap/Button"
+import { useNavigate } from "@tanstack/react-location"
+import { useState } from "react"
+import api from "../api"
 
 export function Login() {
-  const navigate = useNavigate();
-  const [controlNumber, setControlNumber] = useState('')
-  const login = () => {
-    const url = `http://localhost:3001/users/control-number/${controlNumber}`;
-    fetch(url).then((res) =>{
-      if(res.status != '200'){
-        return 
-      }
-      return res.json();
-    }).then((data) =>{
-      console.log(data)
-      localStorage.setItem('PET_MACHINE', JSON.stringify(data))
-      navigate({ to: "/", replace: true });
-    })
-  };
+  const navigate = useNavigate()
+  const [controlNumber, setControlNumber] = useState("")
+  const login = async () => {
+    const url = `http://localhost:3001/users/control-number/${controlNumber}`
+    const userData = await api.login(controlNumber)
+
+    if (userData.status != "200") {
+      return
+    }
+
+    console.log(data)
+    localStorage.setItem("PET_MACHINE", JSON.stringify(data.data))
+    navigate({ to: "/", replace: true })
+  }
   return (
     <div
       style={{
@@ -35,7 +35,13 @@ export function Login() {
           <Form>
             <Form.Group className="mb-3" controlId="formControlNumber">
               <Form.Label>Numero de control</Form.Label>
-              <Form.Control type="text" placeholder="17268459" onChange={ (event) =>{setControlNumber(event.currentTarget.value)}}/>
+              <Form.Control
+                type="text"
+                placeholder="17268459"
+                onChange={(event) => {
+                  setControlNumber(event.currentTarget.value)
+                }}
+              />
             </Form.Group>
             <div className="d-flex justify-content-center">
               <Button variant="primary" onClick={login}>
@@ -46,5 +52,5 @@ export function Login() {
         </Card.Body>
       </Card>
     </div>
-  );
+  )
 }
