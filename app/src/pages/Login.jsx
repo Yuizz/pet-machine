@@ -8,18 +8,20 @@ import api from "../api"
 export function Login() {
   const navigate = useNavigate()
   const [controlNumber, setControlNumber] = useState("")
-  const login = async () => {
+
+  const login = async (e) => {
     const url = `http://localhost:3001/users/control-number/${controlNumber}`
     const userData = await api.login(controlNumber)
 
     if (userData.status != "200") {
+      alert("Usuario no encontrado")
       return
     }
 
-    console.log(userData.data)
-    localStorage.setItem("PET_MACHINE", JSON.stringify(userData.data))
+    localStorage.setItem("PET_MACHINE", userData.data.controlNumber)
     navigate({ to: "/", replace: true })
   }
+
   return (
     <div
       style={{
@@ -41,10 +43,22 @@ export function Login() {
                 onChange={(event) => {
                   setControlNumber(event.currentTarget.value)
                 }}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    event.preventDefault()
+                    login(event)
+                  }
+                }}
               />
             </Form.Group>
             <div className="d-flex justify-content-center">
-              <Button variant="primary" onClick={login}>
+              <Button
+                variant="primary"
+                onClick={(e) => {
+                  e.preventDefault()
+                  login()
+                }}
+              >
                 Iniciar
               </Button>
             </div>

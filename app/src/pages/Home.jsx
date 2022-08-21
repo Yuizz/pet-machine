@@ -1,12 +1,29 @@
 import { useEffect, useState } from "react"
+import { useNavigate } from "@tanstack/react-location"
+import api from "../api"
 
 export function Home() {
   const CIRCLE_DIAMETER = "16rem"
+  const navigate = useNavigate()
   const [userData, setUserData] = useState(null)
+
+  const getUser = async (controlNumber) => {
+    const url = `http://localhost:3001/users/control-number/${controlNumber}`
+    const userData = await api.login(controlNumber)
+
+    if (userData.status != "200") {
+      navigate({ to: "/login", replace: true })
+      return
+    }
+
+    setUserData(userData.data)
+  }
+
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("PET_MACHINE"))
-    setUserData(data)
+    const controlNumber = localStorage.getItem("PET_MACHINE")
+    getUser(controlNumber)
   }, [])
+
   return (
     <div className="bg-light w-100">
       <div
