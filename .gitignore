@@ -62,3 +62,6 @@ typings/
 
 #production build output
 *build
+
+#mongo data
+mongo-data/

@@ -1,16 +1,6 @@
-conn = new Mongo();
-db = conn.getDB("pet_machine");
+echo '################ MONGO ENTRYPOINT START ################';
 
-db.createUser({
-  user: "jugo",
-  pwd: "pass",
-  roles: [
-    {
-      role: "readWrite",
-      db: "mongodb",
-    },
-  ],
-});
+mongo -- "$MONGO_INITDB_DATABASE" <<EOF
 
 db.createCollection("users");
 
@@ -42,6 +32,9 @@ student3 = {
   updatedAt: new Date(),
 };
 
-db.students.insert(student1);
-db.students.insert(student2);
-db.students.insert(student3);
+db.users.insert(student1);
+db.users.insert(student2);
+db.users.insert(student3);
+EOF
+
+echo '################ MONGO ENTRYPOINT END ################';

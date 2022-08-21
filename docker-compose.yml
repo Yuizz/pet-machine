@@ -1,14 +1,45 @@
-version: '3.8'
+version: "3.8"
 
 services:
   mongo:
     image: mongo
+    container_name: pet-machine_mongo
     ports:
       - 27017:27017
     volumes:
-      - mongodata:/data/db
+      - ./mongo-data:/data/db
+      - ./mongo-init/init.js:/docker-entrypoint-initdb.d/init.js:ro
+    env_file:
+      - .env
+
+  api:
+    container_name: pet-machine_api
+    restart: always
+    build: ./api
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./api:/api
+    depends_on:
+      - mongo
+    links:
+      - mongo
+    env_file:
+      - .env
+
+  app:
+    container_name: pet-machine_app
+    restart: always
+    build: ./app
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./app:/app
+    env_file:
+      - .env
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=jugo
-      - MONGO_INITDB_ROOT_PASSWORD=pass
+      - FAST_REFRESH=${FAST_REFRESH:-true}
+      - CHOKIDAR_USEPOLLING=${CHOKIDAR_USEPOLLING:-false}
+
 volumes:
   mongodata:
